@@ -1,6 +1,0 @@
-﻿  raytracerweeknd.cpp
-C:\GIT\raytracerweeknd\raytracerweeknd.cpp(11,11): warning C4244: "Initialisierung": Konvertierung von "double" in "float", möglicher Datenverlust
-C:\GIT\raytracerweeknd\raytracerweeknd.cpp(12,15): warning C4244: "Argument": Konvertierung von "double" in "const float", möglicher Datenverlust
-C:\GIT\raytracerweeknd\raytracerweeknd.cpp(12,66): warning C4305: "Argument": Verkürzung von "double" in "float"
-C:\GIT\raytracerweeknd\raytracerweeknd.cpp(35,34): warning C4305: "Argument": Verkürzung von "double" in "const float"
-  raytracerweeknd.vcxproj -> C:\GIT\raytracerweeknd\Debug\raytracerweeknd.exe
