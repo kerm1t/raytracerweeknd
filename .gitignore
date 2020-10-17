@@ -1,0 +1,11 @@
+build/
+Debug/
+Release/
+.vs/
+
+*.opendb
+*.sdf
+*.suo
+/ipch/**
+**/lib
+*.pyc
