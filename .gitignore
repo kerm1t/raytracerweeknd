@@ -1,0 +1,8 @@
+build/
+
+*.opendb
+*.sdf
+*.suo
+/ipch/**
+**/lib
+*.pyc

@@ -1,0 +1,4 @@
+C:\GIT\raytracerweeknd\raytracerweeknd\Debug\raytracerweeknd.exe
+C:\GIT\raytracerweeknd\raytracerweeknd\Debug\raytracerweeknd.pdb
+C:\GIT\raytracerweeknd\Debug\raytracerweeknd.exe
+C:\GIT\raytracerweeknd\Debug\raytracerweeknd.pdb
