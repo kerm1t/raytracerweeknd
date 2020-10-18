@@ -5,22 +5,31 @@
 #include "vec3f.hxx"
 #include "ray.h"
 
-bool hit_sphere(const vec3& center, float radius, const ray& r)
+float hit_sphere(const vec3& center, float radius, const ray& r)
 {
   vec3 oc = r.origin() - center; // ray origin - circle center
   float a = Dot(r.dir(), r.dir());
   float b = 2.0 * Dot(oc, r.dir());
   float c = Dot(oc, oc) - radius * radius;
   float discriminant = b * b - 4 * a * c; // under the sqrt: b^2-4ac
-  return discriminant > 0; // 1 or 2 hits
+  if (discriminant < 0) // no solution
+  {
+    return -1.0;
+  } else
+  {
+    return (-b - sqrt(discriminant)) / (2.0 * a);
+  }
 }
 vec3 color(const ray& r) // makes a blue-> white pattern
 {
-  if (hit_sphere(vec3(0,0,-1),0.5,r)) return vec3(1,0,0); // red sphere
-  if (hit_sphere(vec3(0, -1.5, 1), 0.2, r)) return vec3(0, 0, 1); // blue sphere
+  float t = hit_sphere(vec3(0, 0, -1), 0.5, r);
+  if (t > 0.0)
+  {
+    vec3 N = Normalize(r.point_at_param(t)-vec3(0,0,-1));
+    return 0.5 * (N + 1.0);
+  }
   vec3 unit_dir = Normalize(r.dir());
-  if (hit_sphere(vec3(0,0,-1),0.5,r)) return vec3(1,0,0);
-  float t = 0.5 * (unit_dir.y + 1.0);
+  t = 0.5 * (unit_dir.y + 1.0);
   return (1.0 - t) * vec3(1.0, 1.0, 1.0) + t * vec3(0.5, 0.7, 1.0);
 }
 
@@ -33,7 +42,7 @@ int main()
 
   std::cout << "P3\n" << w << ' ' << h << "\n255\n";
   // FoV plus "intrinsics"
-  vec3 bottom_left(-2.0, -1.0, -1.0);
+  vec3 bottom_left(-2.0, -1.5, -1.0);
   vec3 horiz(4.0, 0.0, 0.0);
   vec3 vert(0.0, 3.0, 0.0);
   vec3 origin(0.0, 0.0, 0.0);
