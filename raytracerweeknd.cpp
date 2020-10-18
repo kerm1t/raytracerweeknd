@@ -2,35 +2,25 @@
 //
 
 #include <iostream>
-#include "vec3f.hxx"
+//#include "vec3f.hxx"
 #include "ray.h"
+#include "sphere.h"
+#include "hitable_list.h"
 
-float hit_sphere(const vec3& center, float radius, const ray& r)
+
+vec3 color(const ray& r, hitable* world) // makes a blue-> white pattern
 {
-  vec3 oc = r.origin() - center; // ray origin - circle center
-  float a = Dot(r.dir(), r.dir());
-  float b = 2.0 * Dot(oc, r.dir());
-  float c = Dot(oc, oc) - radius * radius;
-  float discriminant = b * b - 4 * a * c; // under the sqrt: b^2-4ac
-  if (discriminant < 0) // no solution
+  hit_record rec;
+  if (world->hit(r, 0.0, FLT_MAX, rec))
   {
-    return -1.0;
-  } else
-  {
-    return (-b - sqrt(discriminant)) / (2.0 * a);
+    return 0.5 * (rec.normal + 1.0);
   }
-}
-vec3 color(const ray& r) // makes a blue-> white pattern
-{
-  float t = hit_sphere(vec3(0, 0, -1), 0.5, r);
-  if (t > 0.0)
+  else // background
   {
-    vec3 N = Normalize(r.point_at_param(t)-vec3(0,0,-1));
-    return 0.5 * (N + 1.0);
+    vec3 unit_dir = Normalize(r.dir());
+    float t = 0.5 * (unit_dir.y + 1.0);
+    return (1.0 - t) * vec3(1.0, 1.0, 1.0) + t * vec3(0.5, 0.7, 1.0);
   }
-  vec3 unit_dir = Normalize(r.dir());
-  t = 0.5 * (unit_dir.y + 1.0);
-  return (1.0 - t) * vec3(1.0, 1.0, 1.0) + t * vec3(0.5, 0.7, 1.0);
 }
 
 int main()
@@ -47,6 +37,11 @@ int main()
   vec3 vert(0.0, 3.0, 0.0);
   vec3 origin(0.0, 0.0, 0.0);
 
+  hitable* list[2];
+  list[0] = new sphere(vec3(0, 0, -1), 0.5);
+  list[1] = new sphere(vec3(0, -100.5, -1), 100); // that is the green sphere ;-)
+  hitable* world = new hitable_list(list, 2);
+
   for (int j = h - 1; j >= 0; j--)
   {
     std::cerr << "\rScanlines remaining:" << j << std::flush;
@@ -55,7 +50,8 @@ int main()
       float u = float(i) / float(w);
       float v = float(j) / float(h);
       ray r(origin, bottom_left + u * horiz + v * vert);
-      vec3 col = 255.9 * color(r);
+//      vec3 p = r.point_at_param(2.0);
+      vec3 col = 255.99 * color(r, world);
       int ir = static_cast<int>(col.x);
       int ig = static_cast<int>(col.y);
       int ib = static_cast<int>(col.z);
