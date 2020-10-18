@@ -26,5 +26,14 @@
     <ClInclude Include="ray.h">
       <Filter>Quelldateien</Filter>
     </ClInclude>
+    <ClInclude Include="hitable.h">
+      <Filter>Quelldateien</Filter>
+    </ClInclude>
+    <ClInclude Include="sphere.h">
+      <Filter>Quelldateien</Filter>
+    </ClInclude>
+    <ClInclude Include="hitable_list.h">
+      <Filter>Quelldateien</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

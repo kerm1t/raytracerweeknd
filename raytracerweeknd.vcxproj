@@ -142,7 +142,10 @@
     <ClCompile Include="raytracerweeknd.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="hitable.h" />
+    <ClInclude Include="hitable_list.h" />
     <ClInclude Include="ray.h" />
+    <ClInclude Include="sphere.h" />
     <ClInclude Include="vec3f.hxx" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
