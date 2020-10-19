@@ -35,5 +35,8 @@
     <ClInclude Include="hitable_list.h">
       <Filter>Quelldateien</Filter>
     </ClInclude>
+    <ClInclude Include="camera.h">
+      <Filter>Quelldateien</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

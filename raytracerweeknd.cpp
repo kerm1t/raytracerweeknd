@@ -2,11 +2,10 @@
 //
 
 #include <iostream>
-//#include "vec3f.hxx"
 #include "ray.h"
 #include "sphere.h"
 #include "hitable_list.h"
-
+#include "camera.h"
 
 vec3 color(const ray& r, hitable* world) // makes a blue-> white pattern
 {
@@ -27,31 +26,33 @@ int main()
 {
   const int w = 1024;
   const int h = 768;
-
+  const int ns = 100;
   // Render
 
   std::cout << "P3\n" << w << ' ' << h << "\n255\n";
-  // FoV plus "intrinsics"
-  vec3 bottom_left(-2.0, -1.5, -1.0);
-  vec3 horiz(4.0, 0.0, 0.0);
-  vec3 vert(0.0, 3.0, 0.0);
-  vec3 origin(0.0, 0.0, 0.0);
-
+ 
   hitable* list[2];
   list[0] = new sphere(vec3(0, 0, -1), 0.5);
   list[1] = new sphere(vec3(0, -100.5, -1), 100); // that is the green sphere ;-)
   hitable* world = new hitable_list(list, 2);
+  camera cam;
 
   for (int j = h - 1; j >= 0; j--)
   {
     std::cerr << "\rScanlines remaining:" << j << std::flush;
     for (int i = 0; i < w; i++)
     {
-      float u = float(i) / float(w);
-      float v = float(j) / float(h);
-      ray r(origin, bottom_left + u * horiz + v * vert);
-//      vec3 p = r.point_at_param(2.0);
-      vec3 col = 255.99 * color(r, world);
+      vec3 col(0, 0, 0);
+      for (int s = 0; s < ns; s++)
+      {
+        float u = float(i+rand() / 32767.0) / float(w);
+        float v = float(j+rand()/ 32767.0) / float(h);
+        ray r = cam.get_ray(u, v);
+        //      vec3 p = r.point_at_param(2.0);
+        col += color(r, world);
+      }
+      col /= float(ns);
+      col *= 255.99;
       int ir = static_cast<int>(col.x);
       int ig = static_cast<int>(col.y);
       int ib = static_cast<int>(col.z);

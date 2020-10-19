@@ -68,6 +68,7 @@ inline void operator/=(vec3 &v, const float f) { v *= (1/f); };
 
   /*! still undocumented */
 inline vec3 operator+(const vec3 &a, const vec3 &b) { return vec3(a.x+b.x, a.y+b.y, a.z+b.z); };
+inline void operator+=(vec3& a, const vec3& b) { a.x += b.x; a.y += b.y; a.z += b.z; };
 inline vec3 operator+(const vec3& a, const float& f) { return vec3(a.x + f, a.y + f, a.z + f); }; // does this make sense?
 
   /*! still undocumented */
