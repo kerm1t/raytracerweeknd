@@ -7,12 +7,24 @@
 #include "hitable_list.h"
 #include "camera.h"
 
+inline float rand_f(void) { return rand() / 32767.0; };
+
+vec3 random_in_unit_sphere()
+{
+  vec3 p;
+  do {
+    p = 2.0 * vec3(rand_f(), rand_f(), rand_f()) - vec3(1, 1, 1);
+  } while (SquaredLength(p) >= 1.0);
+  return p;
+}
+
 vec3 color(const ray& r, hitable* world) // makes a blue-> white pattern
 {
   hit_record rec;
-  if (world->hit(r, 0.0, FLT_MAX, rec))
+  if (world->hit(r, 0.001, FLT_MAX, rec))
   {
-    return 0.5 * (rec.normal + 1.0);
+    vec3 target = rec.p + rec.normal + random_in_unit_sphere();
+    return 0.5 * color(ray(rec.p,target-rec.p),world);
   }
   else // background
   {
@@ -24,8 +36,8 @@ vec3 color(const ray& r, hitable* world) // makes a blue-> white pattern
 
 int main()
 {
-  const int w = 1024;
-  const int h = 768;
+  const int w = 640;
+  const int h = 480;
   const int ns = 100;
   // Render
 
@@ -45,17 +57,17 @@ int main()
       vec3 col(0, 0, 0);
       for (int s = 0; s < ns; s++)
       {
-        float u = float(i+rand() / 32767.0) / float(w);
-        float v = float(j+rand()/ 32767.0) / float(h);
+        float u = float(i+ rand_f()) / float(w);
+        float v = float(j+ rand_f()) / float(h);
         ray r = cam.get_ray(u, v);
         //      vec3 p = r.point_at_param(2.0);
         col += color(r, world);
       }
       col /= float(ns);
-      col *= 255.99;
-      int ir = static_cast<int>(col.x);
-      int ig = static_cast<int>(col.y);
-      int ib = static_cast<int>(col.z);
+//      col *= 255.99;
+      int ir = static_cast<int>(255.99*sqrt(col.x));
+      int ig = static_cast<int>(255.99 * sqrt(col.y));
+      int ib = static_cast<int>(255.99 * sqrt(col.z));
 
       std::cout << ir << ' ' << ig << ' ' << ib << '\n';
     }

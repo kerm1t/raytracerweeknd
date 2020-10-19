@@ -38,7 +38,7 @@ inline float Dot(const vec3 &a, const vec3 &b) { return a.x*b.x+a.y*b.y+a.z*b.z;
   /*! component-wise product */
 inline vec3 Product(const vec3 &a, const vec3 &b) { return vec3(a.x*b.x,a.y*b.y,a.z*b.z); };
 
-  /*! vector product */
+/*! vector product */
 inline vec3 Cross(const vec3 &a, const vec3 &b)
 { return vec3(a.y*b.z-a.z*b.y,
 	    a.z*b.x-a.x*b.z,
@@ -47,6 +47,7 @@ inline vec3 Cross(const vec3 &a, const vec3 &b)
 inline vec3 operator-(const vec3 &v) { return vec3(-v.x,-v.y,-v.z); };
 
 inline float Length(const vec3 &v) { return sqrt(Dot(v,v)); };
+inline float SquaredLength(const vec3& v) { return Length(v) * Length(v); };
 
   /*! still undocumented */
 inline vec3 operator*(const float f, const vec3 &v) { return vec3(f*v.x, f*v.y, f*v.z); };
