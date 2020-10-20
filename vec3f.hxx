@@ -49,8 +49,9 @@ inline vec3 operator-(const vec3 &v) { return vec3(-v.x,-v.y,-v.z); };
 inline float Length(const vec3 &v) { return sqrt(Dot(v,v)); };
 inline float SquaredLength(const vec3& v) { return Length(v) * Length(v); };
 
-  /*! still undocumented */
+/*! still undocumented */
 inline vec3 operator*(const float f, const vec3 &v) { return vec3(f*v.x, f*v.y, f*v.z); };
+inline vec3 operator*(const vec3& a, const vec3& b) { return vec3(a.x * b.x, a.y * b.y, a.z * b.z); };
 
   /*! still undocumented */
 inline vec3 operator*(const vec3 &v, const float f) { return vec3(f*v.x, f*v.y, f*v.z); };

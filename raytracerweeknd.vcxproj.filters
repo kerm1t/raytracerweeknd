@@ -38,5 +38,8 @@
     <ClInclude Include="camera.h">
       <Filter>Quelldateien</Filter>
     </ClInclude>
+    <ClInclude Include="material.h">
+      <Filter>Quelldateien</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
