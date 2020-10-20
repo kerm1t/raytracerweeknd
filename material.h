@@ -68,6 +68,13 @@ bool refract(const vec3& v, const vec3& n, float ni_over_nt, vec3& refracted)
   }
 };
 
+// improved model, refraction changes with incident angle
+float schlick(float cosine, float ref_idx) {
+  float r0 = (1 - ref_idx) / (1 + ref_idx);
+  r0 = r0 * r0;
+  return r0 + (1 - r0) * pow((1 - cosine), 5);
+}
+
 class dielectric : public material {
 public:
   dielectric(float ri) : ref_idx(ri) {}
@@ -78,23 +85,35 @@ public:
     float ni_over_nt;
     attenuation = vec3(1.0, 1.0, 1.0);
     vec3 refracted;
+    float reflect_prob;
+    float cosine;
     if (Dot(r_in.dir(), rec.normal) > 0) {
       outward_normal = -rec.normal;
       ni_over_nt = ref_idx;
+      cosine = ref_idx * Dot(r_in.dir(), rec.normal) / Length(r_in.dir());
     }
     else
     {
       outward_normal = rec.normal;
       ni_over_nt = 1.0 / ref_idx;
+      cosine = -Dot(r_in.dir(), rec.normal) / Length(r_in.dir());
     }
     if (refract(r_in.dir(), outward_normal, ni_over_nt, refracted))
     {
-      scattered = ray(rec.p, refracted);
+      reflect_prob = schlick(cosine,ref_idx);
     }
     else
     {
       scattered = ray(rec.p, refracted);
-      return false;
+      reflect_prob = 1.0;
+    }
+    if (rand_f() < reflect_prob)
+    {
+      scattered = ray(rec.p, reflected);
+    }
+    else
+    {
+      scattered = ray(rec.p, refracted);
     }
     return true;
   }
