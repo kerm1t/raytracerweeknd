@@ -36,10 +36,10 @@ int main()
   const int w = 640;
   const int h = 480;
   const int ns = 100;
-  // Render
-
+ 
   std::cout << "P3\n" << w << ' ' << h << "\n255\n";
  
+  // objects
   float R = cos(M_PI / 180.0);
   hitable* list[6];
   list[0] = new sphere(vec3(0, 0, -1), 0.5, new lambertian(vec3(0.1, 0.2, 0.5)));
@@ -49,8 +49,15 @@ int main()
   list[4] = new sphere(vec3(-1, 0, -1), 0.5, new dielectric(1.5));
   list[5] = new sphere(vec3(-1, 0, -1), -0.45, new dielectric(1.5));
   hitable* world = new hitable_list(list, 6);
-  camera cam(vec3(-2,2,1), vec3(0,0,-1), vec3(0,1,0), 30, float(w)/float(h));
+  
+  // camera
+  vec3 pos(3, 3, 2);
+  vec3 lookat(0, 0, -1);
+  float dist_to_focus = Length(pos - lookat);
+  float aperture = 2.0;
+  camera cam(pos, lookat, vec3(0,1,0), 30, float(w)/float(h), aperture, dist_to_focus);
 
+  // Render
   for (int j = h - 1; j >= 0; --j)
   {
     std::cerr << "\rScanlines remaining:" << j << std::flush;
