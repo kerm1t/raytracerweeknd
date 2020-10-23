@@ -1,0 +1,2 @@
+- make 2d editor
+- store cfg together with picture, to reproduce progress
