@@ -7,6 +7,9 @@
 #include "hitable_list.h"
 #include "camera.h"
 #include "material.h"
+#include "triangle.h"
+
+const int MAX_DEPTH = 50; // max. bounces per ray
 
 vec3 color(const ray& r, hitable* world, int depth)
 {
@@ -15,7 +18,7 @@ vec3 color(const ray& r, hitable* world, int depth)
   {
     ray scattered;
     vec3 attenuation;
-    if (depth < 50 && rec.mat_ptr->scatter(r, rec, attenuation, scattered)) {
+    if (depth < MAX_DEPTH && rec.mat_ptr->scatter(r, rec, attenuation, scattered)) {
       return attenuation * color(scattered, world, depth + 1);
     }
     else
@@ -62,28 +65,44 @@ hitable* random_scene() {
 
 int main()
 {
-  const int w = 1024;
-  const int h = 768;
+  const int w = 640;
+  const int h = 480;
   const int ns = 100;
  
   std::cout << "P3\n" << w << ' ' << h << "\n255\n";
  
   // objects
-/*  float R = cos(M_PI / 180.0);
-  hitable* list[6];
+  float R = cos(M_PI / 180.0);
+  hitable* list[15];
   list[0] = new sphere(vec3(0, 0, -1), 0.5, new lambertian(vec3(0.1, 0.2, 0.5)));
   list[1] = new sphere(vec3(0, -100.5, -1), 100, new lambertian(vec3(0.8, 0.8, 0.0))); // that is the green sphere ;-)
   list[2] = new sphere(vec3(1, 0, -1), 0.5, new metal(vec3(0.8, 0.6, 0.2), 0.2));
   list[3] = new sphere(vec3(-1, 0, -1), 0.5, new dielectric(1.5));
   list[4] = new sphere(vec3(-1, 0, -1), 0.5, new dielectric(1.5));
   list[5] = new sphere(vec3(-1, 0, -1), -0.45, new dielectric(1.5));
-  hitable* world = new hitable_list(list, 6);
-*/  hitable* world = random_scene();
+
+  list[6] = new triangle(vec3(0,0,0), vec3(4,2,1), vec3(4,2,1), new lambertian(vec3(0.9, 0.1, 0.1)));
+
+  // H
+  float x = -2;
+  list[7]  = new triangle(vec3(x, 0, 0), vec3(x, 0, 1), vec3(x, 2, 1), new lambertian(vec3(0.9, 0.1, 0.1)));
+  list[8]  = new triangle(vec3(x, 0, 0), vec3(x, 2, 1), vec3(x, 5, 0), new lambertian(vec3(0.9, 0.1, 0.1)));
+  list[9]  = new triangle(vec3(x, 2, 1), vec3(x, 5, 1), vec3(x, 5, 0), new lambertian(vec3(0.9, 0.1, 0.1)));
+  list[10] = new triangle(vec3(x, 2, 1), vec3(x, 3, 2), vec3(x, 3, 1), new lambertian(vec3(0.9, 0.1, 0.1)));
+  list[11] = new triangle(vec3(x, 2, 1), vec3(x, 2, 2), vec3(x, 3, 2), new lambertian(vec3(0.9, 0.1, 0.1)));
+  list[12] = new triangle(vec3(x, 0, 2), vec3(x, 0, 3), vec3(x, 2, 2), new lambertian(vec3(0.9, 0.1, 0.1)));
+  list[13] = new triangle(vec3(x, 0, 3), vec3(x, 5, 3), vec3(x, 2, 2), new lambertian(vec3(0.9, 0.1, 0.1)));
+  list[14] = new triangle(vec3(x, 2, 2), vec3(x, 5, 3), vec3(x, 5, 2), new lambertian(vec3(0.9, 0.1, 0.1)));
+  hitable* world = new hitable_list(list, 15);
+  // R
+  // L
+
+//  hitable* world = random_scene();
 
   // camera
 //  vec3 pos(7, 1.6, -1);
 //  vec3 lookat(-6, 1.3, 1);
-  vec3 pos(5, 1.5, 2);
+  vec3 pos(7, 1.5, 2);
   vec3 lookat(0, 0, -1);
   float dist_to_focus = Length(pos - lookat);
   float aperture = 0.01;

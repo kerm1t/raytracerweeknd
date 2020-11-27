@@ -12,7 +12,7 @@ public:
   float radius;
   material* mat_ptr;
 };
-
+/* t_min and t_max limit the length of intersection space */
 bool sphere::hit(const ray& r, float t_min, float t_max, hit_record& rec) const
 {
   vec3 oc = r.origin() - center; // ray origin - circle center
