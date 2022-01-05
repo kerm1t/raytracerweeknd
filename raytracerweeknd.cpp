@@ -1,5 +1,10 @@
-// raytracerweeknd.cpp : Diese Datei enthält die Funktion "main". Hier beginnt und endet die Ausführung des Programms.
+// Ray tracer in a weekend
 //
+// this will write r,g,b values to std::out
+//
+// How to run:
+// raytracerweekend > x.ppm
+
 
 #include <iostream>
 #include "ray.h"
@@ -7,6 +12,8 @@
 #include "hitable_list.h"
 #include "camera.h"
 #include "material.h"
+
+//#include "mdl_wavefront.hpp"
 
 vec3 color(const ray& r, hitable* world, int depth)
 {
@@ -62,8 +69,8 @@ hitable* random_scene() {
 
 int main()
 {
-  const int w = 1024;
-  const int h = 768;
+  const int w = 320;//1024;
+  const int h = 240;// 768;
   const int ns = 100;
  
   std::cout << "P3\n" << w << ' ' << h << "\n255\n";

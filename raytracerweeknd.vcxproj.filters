@@ -41,5 +41,8 @@
     <ClInclude Include="material.h">
       <Filter>Quelldateien</Filter>
     </ClInclude>
+    <ClInclude Include="mdl_wavefront.hpp">
+      <Filter>Quelldateien</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
